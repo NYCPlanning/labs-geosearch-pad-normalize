@@ -63,6 +63,10 @@ pad <- pad %>%
   left_join(bincentroids, by = 'bin') %>%
   left_join(bblcentroids, by = 'bbl') %>%
   mutate(
+    pad_geomtype = case_when(
+      is.na(lat.x) & is.na(lng.x)   ~ 'bbl',
+      TRUE                          ~ 'bin'
+    ),
     lat = case_when(
       is.na(lat.x) & is.na(lng.x)   ~ lat.y,
       TRUE                          ~ lat.x

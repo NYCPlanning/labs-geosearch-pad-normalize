@@ -20,3 +20,6 @@ The script is incomplete! Find sample output [here](https://github.com/NYCPlanni
 
 # Deploy
 To "deploy" data as the source for the geosearch importer, run `npm run deploy`. You must have s3cmd configured as it will run that command to upload output files. To setup for Digital Ocean spaces, see: https://www.digitalocean.com/community/tutorials/how-to-configure-s3cmd-2-x-to-manage-digitalocean-spaces.
+
+For a new version of pad, two references to files need to be updated.  In `download_data` ensure that the download link points to the latest PAD version (17D, 18A, etc) and `load_data` make sure the path to the street name dictionary (snd17Dcow.txt, snd18Acow.txt, etc) reflects the current release.
+

@@ -1,9 +1,7 @@
 # labs-pad-normalize
 R script to normalize PAD data into discrete address records.  Part of the [NYC Geosearch Geocoder Project](https://github.com/NYCPlanning/labs-geosearch-dockerfiles)
 
-# Introduction
-The NYC Geosearch API is built on Pelias, the open source geocoding engine that powered Mapzen Search. To accomplish this, Labs uses the authoritative Property Address Directory (PAD) data from the NYC Department of City Planning's Geographic Systems Section. However, because the data represent _ranges_ of addresses, the data must be normalized into an "expanded" form that Pelias will understand. This expansion process involves many factor-specific nuances that translate the ranges into discrete address rows.
-
+# Introduction The NYC Geosearch API is built on Pelias, the open source geocoding engine that powered Mapzen Search. To accomplish this, Labs uses the authoritative Property Address Directory (PAD) data from the NYC Department of City Planning's Geographic Systems Section. However, because the data represent _ranges_ of addresses, the data must be normalized into an "expanded" form that Pelias will understand. This expansion process involves many factor-specific nuances that translate the ranges into discrete address rows.  
 <img width="1335" alt="screen shot 2018-01-18 at 2 48 09 pm" src="https://user-images.githubusercontent.com/1833820/35636336-d944fb22-067e-11e8-800c-65ca2100a67b.png">
 
 
@@ -45,3 +43,6 @@ If you're happy with your data, push it to digital ocean using the included shel
 ```sh
 $ ./push-to-bucket.sh
 ```
+
+
+TODO: SHOULD WE USE THE PAD VERSION IN ANY OF THE FILING NAMING?

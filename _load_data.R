@@ -11,7 +11,7 @@ bbl <- read_csv('data/bobabbl.txt') %>%
 
 # Read Street Names Database to join in alternates 
 snd <- read_fwf(
-  'data/snd18Acow.txt', 
+  paste('data/snd', toupper(padVersion),'cow.txt', sep=""),
   fwf_widths(
     c(1, 1, 32, 1, 1, 1, 5, 2, 3, 2, 1, 1, 2, 32, 2, 20, 1, 92),
     col_names = c('rectype', 'boro', 'stname', 'primary_flag', 'principal_flag', 'boro2', 'sc5', 'lgc', 'spv', 'filler2', 'numeric_ind', 'GFT', 'len_full_name', 'full_stname', 'min_SNL', 'stn20', 'ht_name_type_code', 'filler')

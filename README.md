@@ -23,3 +23,25 @@ To "deploy" data as the source for the geosearch importer, run `npm run deploy`.
 
 For a new version of pad, two references to files need to be updated.  In `download_data` ensure that the download link points to the latest PAD version (17D, 18A, etc) and `load_data` make sure the path to the street name dictionary (snd17Dcow.txt, snd18Acow.txt, etc) reflects the current release.
 
+# How to run
+Make sure R is installed on your machine. If you just want CLI stuff:
+```sh
+$ brew install R
+```
+Install necessary packages
+```sh
+$ R
+> install.packages(c("tidyverse", "jsonlite", "downloader"))
+```
+(Note: this may take a long time. Go get a coffee or something)
+
+Run the R script to normalize the new PAD data:
+```sh
+$ Rscript ./munge.R
+```
+Due to the nature of the PAD dataset, it is very likely that some data processing may be incompatible with new versions. At the very least, it if likely new entries will need to be added to the [suffix lookup table data](https://github.com/NYCPlanning/labs-geosearch-pad-normalize/blob/develop/suffix_lookup.csv). Do not dispair. Use RStudio to step thru the munging process one step at a time. You'll get there. You got this!
+
+If you're happy with your data, push it to digital ocean using the included shell script:
+```sh
+$ ./push-to-bucket.sh
+```

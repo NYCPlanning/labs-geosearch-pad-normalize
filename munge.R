@@ -1,3 +1,4 @@
+source('_globals.R')
 source('_dependencies.R')
 source('_functions.R')
 source('_download_data.R')
@@ -32,8 +33,7 @@ expanded %>% group_by(rowType) %>% summarise(count = length(rowType)) %>% print
 # Simply selects only needed columns in the output.
 expanded <- expanded %>%
   select(pad_bbl = bbl, houseNum, pad_bin = bin, pad_orig_stname = stname, pad_low = lhnd, pad_high = hhnd, pad_geomtype, stname = alt_st_name, zipcode, lng, lat) %>%
-  filter(!is.na(lat) & !is.na(lng))
-
+  filter(!is.na(lat) & !is.na(lng)) 
 # Checks:
 # 1. theoretical unnest count matches actual row count
 # 2. check for NAs in crucial columns (stname, lat, lng, bbl)
@@ -57,9 +57,9 @@ checks$total_rows %>% paste("TOTAL ROWS:", .) %>% print
 checks$distinct_rows %>% paste("DISTINCT ROWS:",.) %>% print
 
 "WRITING" %>% print
-write_csv(expanded, 'data/labs-geosearch-pad-normalized.csv', na="")
-write_csv(expanded[sample(nrow(expanded), nrow(expanded) * 0.1), ], 'data/labs-geosearch-pad-normalized-sample-lg.csv', na="")
-write_csv(expanded[sample(nrow(expanded), nrow(expanded) * 0.05), ], 'data/labs-geosearch-pad-normalized-sample-md.csv', na="")
-write_csv(expanded[sample(nrow(expanded), nrow(expanded) * 0.01), ], 'data/labs-geosearch-pad-normalized-sample-sm.csv', na="")
-file.rename('data/labs-geosearch-pad-checks-latest.json', paste(c('data/labs-geosearch-pad-checks-',print(as.integer(Sys.time())*1000, digits=15), '.json'), collapse=""))
-write(toJSON(checks), 'data/labs-geosearch-pad-checks-latest.json')
+dir.create(outDir, showWarnings=FALSE)
+write_csv(expanded, paste0(outDir, '/labs-geosearch-pad-normalized.csv'), na="")
+write_csv(expanded[sample(nrow(expanded), nrow(expanded) * 0.1), ], paste0(outDir, '/labs-geosearch-pad-normalized-sample-lg.csv'), na="")
+write_csv(expanded[sample(nrow(expanded), nrow(expanded) * 0.05), ], paste0(outDir, '/labs-geosearch-pad-normalized-sample-md.csv'), na="")
+write_csv(expanded[sample(nrow(expanded), nrow(expanded) * 0.01), ], paste0(outDir, '/labs-geosearch-pad-normalized-sample-sm.csv'), na="")
+write(toJSON(checks), paste0(dataDir, '/labs-geosearch-pad-checks-', print(as.integer(Sys.time())*1000, digits=15), '.json'))

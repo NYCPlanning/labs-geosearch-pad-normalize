@@ -1,9 +1,30 @@
-source <- "https://www1.nyc.gov/assets/planning/download/zip/data-maps/open-data/pad18a.zip"
-bblcentroids <- "https://planninglabs.carto.com/api/v2/sql?q=SELECT%20bbl,%20Round(ST_X(ST_Centroid(the_geom))::numeric,5)%20AS%20lng,%20Round(ST_Y(ST_Centroid(the_geom))::numeric,5)%20AS%20lat%20FROM%20support_mappluto&format=csv"
-bincentroids <- "https://planninglabs.carto.com/api/v2/sql?q=SELECT%20bin%3A%3Atext%2C%20Round%28ST_X%28ST_Centroid%28the_geom%29%29%3A%3Anumeric%2C5%29%20AS%20lng%2C%20Round%28ST_Y%28ST_Centroid%28the_geom%29%29%3A%3Anumeric%2C5%29%20AS%20lat%20FROM%20planninglabs.building_footprints&format=csv"
 
-download(source, dest="data/dataset.zip", mode="wb") 
-download(bblcentroids, dest="data/bblcentroids.csv", mode="wb")
-download(bincentroids, dest="data/bincentroids.csv", mode="wb")
 
-unzip("data/dataset.zip", exdir = "./data")
+# Define location of specified PAD version
+source <- paste("https://www1.nyc.gov/assets/planning/download/zip/data-maps/open-data/pad", padVersion, ".zip", sep="")
+
+# Define query for all bbl-centroid pairs in latest PLUTO data in Carto
+bblQuery <- "SELECT
+  bbl,
+  Round(ST_X(ST_Centroid(the_geom))::numeric,5) AS lng,
+  Round(ST_Y(ST_Centroid(the_geom))::numeric,5) AS lat
+FROM mappluto"
+bblcentroids <- paste("https://planninglabs.carto.com/api/v2/sql?q=", URLencode(bblQuery), "&format=csv", sep="")
+
+# Define query for all bin-centroid pairs in latest Building Footprints data in Carto 
+binQuery <- "SELECT
+  bin::text,
+  Round(ST_X(ST_Centroid(the_geom))::numeric,5) AS lng,
+  Round(ST_Y(ST_Centroid(the_geom))::numeric,5) AS lat
+FROM planninglabs.building_footprints"
+bincentroids <- paste0("https://planninglabs.carto.com/api/v2/sql?q=", URLencode(binQuery), "&format=csv")
+
+# Download PAD
+download(source, dest=paste0(dataDir, "/dataset.zip"), mode="wb")
+
+# Run queries
+download(bblcentroids, dest=paste0(dataDir, "/bblcentroids.csv"), mode="wb")
+download(bincentroids, dest=paste0(dataDir, "/bincentroids.csv"), mode="wb")
+
+# Unzip PAD
+unzip(paste0(dataDir, "/dataset.zip"), exdir = dataDir)

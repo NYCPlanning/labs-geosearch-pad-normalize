@@ -2,8 +2,7 @@
 R script to normalize PAD data into discrete address records.  Part of the [NYC Geosearch Geocoder Project](https://github.com/NYCPlanning/labs-geosearch-dockerfiles)
 
 # Introduction
-The NYC Geosearch API is built on Pelias, the open source geocoding engine that powered Mapzen Search. To accomplish this, Labs uses the authoritative Property Address Directory (PAD) data from the NYC Department of City Planning's Geographic Systems Section. However, because the data represent _ranges_ of addresses, the data must be normalized into an "expanded" form that Pelias will understand. This expansion process involves many factor-specific nuances that translate the ranges into discrete address rows.
-
+The NYC Geosearch API is built on Pelias, the open source geocoding engine that powered Mapzen Search. To accomplish this, Labs uses the authoritative Property Address Directory (PAD) data from the NYC Department of City Planning's Geographic Systems Section. However, because the data represent _ranges_ of addresses, the data must be normalized into an "expanded" form that Pelias will understand. This expansion process involves many factor-specific nuances that translate the ranges into discrete address rows.  
 <img width="1335" alt="screen shot 2018-01-18 at 2 48 09 pm" src="https://user-images.githubusercontent.com/1833820/35636336-d944fb22-067e-11e8-800c-65ca2100a67b.png">
 
 
@@ -23,3 +22,25 @@ To "deploy" data as the source for the geosearch importer, run `npm run deploy`.
 
 For a new version of pad, two references to files need to be updated.  In `download_data` ensure that the download link points to the latest PAD version (17D, 18A, etc) and `load_data` make sure the path to the street name dictionary (snd17Dcow.txt, snd18Acow.txt, etc) reflects the current release.
 
+# How to run
+Make sure R is installed on your machine. If you just want CLI stuff:
+```sh
+$ brew install R
+```
+Install necessary packages
+```sh
+$ R
+> install.packages(c("tidyverse", "jsonlite", "downloader"))
+```
+(Note: this may take a long time. Go get a coffee or something)
+
+Run the R script to normalize the new PAD data:
+```sh
+$ Rscript ./munge.R
+```
+Due to the nature of the PAD dataset, it is very likely that some data processing may be incompatible with new versions. At the very least, it if likely new entries will need to be added to the [suffix lookup table data](https://github.com/NYCPlanning/labs-geosearch-pad-normalize/blob/develop/suffix_lookup.csv). Do not dispair. Use RStudio to step thru the munging process one step at a time. You'll get there. You got this!
+
+If you're happy with your data, push it to digital ocean using the included shell script:
+```sh
+$ ./push-to-bucket.sh
+```

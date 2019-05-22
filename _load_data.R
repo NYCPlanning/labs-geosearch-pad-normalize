@@ -31,12 +31,15 @@ bblcentroids <- read_csv(
 # Read BIN centroids data, make them distinct on the BIN key
 bincentroids <- read_csv(
   paste0(dataDir, "/bincentroids.csv"),
-  col_types = cols(
-    bin = col_character()
+  col_types = cols_only(
+    BIN = col_character(),
+    the_geom = col_character()
   )
 ) %>%
-  distinct(bin, .keep_all=TRUE) %>%
-  filter(!grepl("^[1-5]0{6}$", bin))
+  distinct(BIN, .keep_all=TRUE) %>%
+  filter(!grepl("^[1-5]0{6}$", BIN))
+# rename BIN column to bin
+names(bincentroids)[names(bincentroids) == "BIN"] <- "bin"
 
 # Read suffix lookup table to join on position-separated suffix code
 suffix_lookup <- read_csv(

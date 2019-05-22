@@ -4,6 +4,14 @@ snd <- snd %>%
   mutate(alt_st_name = str_trim(gsub("\\s+", " ", alt_st_name))) %>%
   mutate(full_stname = str_trim(gsub("\\s+", " ", full_stname)))
 
+# parse out lat and lng from "the_geom" in building footprints (bin centroids) and cast to doubles
+bincentroids <- bincentroids %>%
+  mutate(the_geom = gsub("POINT \\((.*)\\)", "\\1", the_geom)) %>%
+  separate(the_geom, c("lng", "lat"), sep = " ") %>%
+  mutate(lat = as.double(lat, options(digits=7))) %>%
+  mutate(lng = as.double(lng, options(digits=7)))
+
+
 # Left join BBL bill data; unite boro, block, lots, for a concatenated join keys
 pad <- padRaw %>%
   left_join(bbl, by = c('boro', 'block', 'lot')) %>%

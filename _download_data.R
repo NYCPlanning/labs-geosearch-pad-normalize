@@ -18,9 +18,20 @@ bblcentroids <- paste("https://planninglabs.carto.com/api/v2/sql?q=", URLencode(
 # Download PLUTO data
 download(bblcentroids, dest=paste0(dataDir, "/bblcentroids.csv"), mode="wb")
 
+# Import the `httr` library for making HTTP requests
+library(httr)
+
+# Make a GET request on the building footprints' parent (and constant) ID
+r <- GET('https://data.cityofnewyork.us/api/views/nqwf-w8eh')
+
+# Define list of IDs belonging to all of the child views this dataset has
+ids <- strsplit(content(r)$metadata$geo$layers, ",")
+
+# Define the child view ID for BIN centroids
+view_id <- ids[[1]][length(ids[[1]])]
+
 # Define source URL for downloading building footprints data (BIN centroids)
-bincentroids <- "https://data.cityofnewyork.us/api/views/r94s-f34j/rows.csv?accessType=DOWNLOAD"
+bincentroids <- paste("https://data.cityofnewyork.us/api/views/", view_id, "/rows.csv?accessType=DOWNLOAD", sep="")
 
 # Download building footprints data
 download(bincentroids, dest=paste0(dataDir, "/bincentroids.csv"), mode="wb")
-

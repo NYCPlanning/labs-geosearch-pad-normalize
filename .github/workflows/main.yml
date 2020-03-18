@@ -19,3 +19,8 @@ jobs:
       run: |
         export $(echo '${{ github.event.head_commit.message }}' | sed 's/#.*//g' | xargs)
         docker run -v $(pwd)/data:/usr/local/src/scripts/data pad-normalize $VERSION
+    - name: Upload the artifacts!
+      uses: actions/upload-artifact@v1
+      with:
+        name: output
+        path: data

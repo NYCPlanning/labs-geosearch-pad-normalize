@@ -19,8 +19,7 @@ bblcentroids <- paste("https://planninglabs.carto.com/api/v2/sql?q=", URLencode(
 download(bblcentroids, dest=paste0(dataDir, "/bblcentroids.csv"), mode="wb")
 
 # Define source URL for downloading building footprints data (BIN centroids)
-bincentroids <- "https://data.cityofnewyork.us/api/views/r94s-f34j/rows.csv?accessType=DOWNLOAD"
+bincentroids <- "https://data.cityofnewyork.us/api/views/a6zb-fqrc/rows.csv?accessType=DOWNLOAD"
 
 # Download building footprints data
 download(bincentroids, dest=paste0(dataDir, "/bincentroids.csv"), mode="wb")
-

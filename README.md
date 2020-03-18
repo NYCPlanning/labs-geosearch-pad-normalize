@@ -22,7 +22,7 @@ To "deploy" data as the source for the geosearch importer, run `npm run deploy`.
 
 For a new version of pad, two references to files need to be updated.  In `download_data` ensure that the download link points to the latest PAD version (17D, 18A, etc) and `load_data` make sure the path to the street name dictionary (snd17Dcow.txt, snd18Acow.txt, etc) reflects the current release.
 
-# How to run
+# How to run locally
 Make sure R is installed on your machine. If you just want CLI stuff:
 ```sh
 $ brew install R
@@ -43,4 +43,17 @@ Due to the nature of the PAD dataset, it is very likely that some data processin
 If you're happy with your data, push it to digital ocean using the included shell script:
 ```sh
 $ ./push-to-bucket.sh
+```
+# How to run if you have Docker installed
+1. Make sure you check the Bytes of Big Apple for the latest version of PAD (replace 20a with the latest version)
+```
+docker build --tag pad-normalize .
+```
+2. Once the build is complete
+```
+docker run -v $(pwd)/data:/usr/local/src/scripts/data pad-normalize 20a
+```
+or in detached mode:
+```
+docker run -v $(pwd)/data:/usr/local/src/scripts/data -d pad-normalize 20a
 ```

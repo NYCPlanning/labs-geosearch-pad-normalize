@@ -3,13 +3,13 @@ on: [push]
 jobs:
   skip:
     name: Build and test
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     if: "! contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - run: echo "${{ github.event.head_commit.message }}"
   build:
     needs: skip
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: Build docker image
@@ -19,8 +19,13 @@ jobs:
       run: |
         export $(echo '${{ github.event.head_commit.message }}' | sed 's/#.*//g' | xargs)
         docker run -v $(pwd)/data:/usr/local/src/scripts/data pad-normalize $VERSION
-    - name: Upload the artifacts!
+    - name: Upload normalized pad!
       uses: actions/upload-artifact@v1
       with:
         name: nycpad
         path: data/nycpad
+    - name: Upload pad-checks!
+      uses: actions/upload-artifact@v1
+      with:
+        name: pad-checks
+        path: data/pad-checks

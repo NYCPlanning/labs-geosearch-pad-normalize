@@ -66,6 +66,7 @@ gc()
 
 "WRITING" %>% print
 dir.create(outDir, showWarnings=FALSE)
+dir.create(checksDir, showWarnings=FALSE)
 write_csv(expanded, paste0(outDir, '/labs-geosearch-pad-normalized.csv'), na="")
 gc() 
 write_csv(expanded[sample(nrow(expanded), nrow(expanded) * 0.1), ], paste0(outDir, '/labs-geosearch-pad-normalized-sample-lg.csv'), na="")
@@ -74,5 +75,5 @@ write_csv(expanded[sample(nrow(expanded), nrow(expanded) * 0.05), ], paste0(outD
 gc() 
 write_csv(expanded[sample(nrow(expanded), nrow(expanded) * 0.01), ], paste0(outDir, '/labs-geosearch-pad-normalized-sample-sm.csv'), na="")
 gc() 
-write(toJSON(checks), paste0(dataDir, '/labs-geosearch-pad-checks-', print(as.integer(Sys.time())*1000, digits=15), '.json'))
-gc() 
+write(toJSON(checks), paste0(checksDir, '/labs-geosearch-pad-checks-', print(as.integer(Sys.time())*1000, digits=15), '.json'))
+gc()

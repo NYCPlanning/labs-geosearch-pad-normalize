@@ -57,3 +57,9 @@ or in detached mode:
 ```
 docker run -v $(pwd)/data:/usr/local/src/scripts/data -d pad-normalize 20a
 ```
+# How to run in Github Actions
+```
+git add .
+git commit -m 'VERSION=20a'
+git push origin master
+```

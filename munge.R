@@ -18,6 +18,9 @@ pad %>% distinct(typeof(houseNums)) %>% print
 # It then does any other unnests.
 # Two unnests are performed here: first, the interpolations, then an unnest for the LGC join keys
 # After the latter joinkey is created, it performs an inner_join.
+# Using unnest_legacy to improve performance
+
+unnest <- unnest_legacy
 expanded <- pad %>% 
   mutate(houseNum = strsplit(houseNums, ',')) %>%
   unnest(houseNum) %>% 

@@ -27,16 +27,17 @@ expanded <- pad %>%
   mutate(lgc = strsplit(gsub("(.{2})", "\\1,", validlgcs), ',')) %>% 
   unnest(lgc) %>%
   inner_join(snd, by=c('boro', 'sc5', 'lgc'))
-
+gc() 
 # Debugging messages about type distribution
 pad %>% group_by(rowType) %>% summarise(count = length(rowType)) %>% print
 expanded %>% group_by(rowType) %>% summarise(count = length(rowType)) %>% print
-
+gc() 
 "SELECTING RELEVANT COLUMNS FOR EXPORT" %>% print
 # Simply selects only needed columns in the output.
 expanded <- expanded %>%
   select(pad_bbl = bbl, houseNum, pad_bin = bin, pad_orig_stname = stname, pad_low = lhnd, pad_high = hhnd, pad_geomtype, stname = alt_st_name, zipcode, lng, lat) %>%
   filter(!is.na(lat) & !is.na(lng)) 
+gc() 
 # Checks:
 # 1. theoretical unnest count matches actual row count
 # 2. check for NAs in crucial columns (stname, lat, lng, bbl)
@@ -50,7 +51,7 @@ checks <- list(
   total_rows = expanded %>% nrow,
   distinct_rows = expanded %>% distinct %>% nrow
 )
-
+gc() 
 checks$missing_lats %>% ifelse(., paste("✗ WARNING!", ., "MISSING LATITUDES"), "✓ LATITUDES") %>% print
 checks$missing_lngs %>% ifelse(., paste("✗ WARNING!", ., "MISSING LONGITUDES"), "✓ LONGITUDES") %>% print
 checks$missing_bbls %>% ifelse(., paste("✗ WARNING!", ., "MISSING BBLS"), "✓ BBLS") %>% print
@@ -61,11 +62,17 @@ checks$distinct_rows %>% paste("DISTINCT ROWS:",.) %>% print
 
 rm(pad)
 rm(snd)
+gc()
 
 "WRITING" %>% print
 dir.create(outDir, showWarnings=FALSE)
 write_csv(expanded, paste0(outDir, '/labs-geosearch-pad-normalized.csv'), na="")
+gc() 
 write_csv(expanded[sample(nrow(expanded), nrow(expanded) * 0.1), ], paste0(outDir, '/labs-geosearch-pad-normalized-sample-lg.csv'), na="")
+gc() 
 write_csv(expanded[sample(nrow(expanded), nrow(expanded) * 0.05), ], paste0(outDir, '/labs-geosearch-pad-normalized-sample-md.csv'), na="")
+gc() 
 write_csv(expanded[sample(nrow(expanded), nrow(expanded) * 0.01), ], paste0(outDir, '/labs-geosearch-pad-normalized-sample-sm.csv'), na="")
+gc() 
 write(toJSON(checks), paste0(dataDir, '/labs-geosearch-pad-checks-', print(as.integer(Sys.time())*1000, digits=15), '.json'))
+gc() 

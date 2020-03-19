@@ -22,5 +22,5 @@ jobs:
     - name: Upload the artifacts!
       uses: actions/upload-artifact@v1
       with:
-        name: output
-        path: data
+        name: nycpad
+        path: data/nycpad

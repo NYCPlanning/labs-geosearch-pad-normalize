@@ -59,6 +59,9 @@ checks$missing_zips %>% ifelse(., paste("✗ WARNING!", ., "MISSING ZIPCODES"), 
 checks$total_rows %>% paste("TOTAL ROWS:", .) %>% print
 checks$distinct_rows %>% paste("DISTINCT ROWS:",.) %>% print
 
+rm(pad)
+rm(snd)
+
 "WRITING" %>% print
 dir.create(outDir, showWarnings=FALSE)
 write_csv(expanded, paste0(outDir, '/labs-geosearch-pad-normalized.csv'), na="")

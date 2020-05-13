@@ -10,3 +10,5 @@ RUN mkdir -p /data/nycpad
 COPY . /usr/local/src/scripts
 
 WORKDIR /usr/local/src/scripts
+
+ENTRYPOINT ["./bin/normalize"]

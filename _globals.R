@@ -9,4 +9,5 @@ if(length(args) == 0) {
 }
 
 dataDir <- "./data"
-outDir <-"/data/nycpad"
+outDir <-"./data/nycpad"
+checksDir <-"./data/pad-checks"

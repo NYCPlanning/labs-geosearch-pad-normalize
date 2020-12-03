@@ -51,15 +51,15 @@ docker build --tag pad-normalize .
 ```
 2. Once the build is complete
 ```
-docker run -v $(pwd)/data:/usr/local/src/scripts/data pad-normalize 20a
+docker run -v $(pwd)/data:/usr/local/src/scripts/data pad-normalize 20d
 ```
 or in detached mode:
 ```
-docker run -v $(pwd)/data:/usr/local/src/scripts/data -d pad-normalize 20a
+docker run -v $(pwd)/data:/usr/local/src/scripts/data -d pad-normalize 20d
 ```
 # How to run in Github Actions
 ```
 git add .
-git commit -m 'VERSION=20a'
+git commit -m 'VERSION=20d'
 git push origin master
 ```

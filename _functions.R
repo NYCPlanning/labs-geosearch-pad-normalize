@@ -15,7 +15,9 @@ delegate <- cmpfun(function(x) {
   }
   
   if (x['rowType'] == 'numericType') {
-    return(numericType(x['lhns_lhyphen_i'], x['hhns_lhyphen_i']))
+    from <- min(x['lhns_lhyphen_i'], x['hhns_lhyphen_i'])
+    to <- max(x['lhns_lhyphen_i'], x['hhns_lhyphen_i'])
+    return(numericType(from, to))
   }
   
   if (x['rowType'] == 'hyphenNoSuffix') {

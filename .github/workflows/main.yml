@@ -1,31 +1,43 @@
 name: CI
 on: [push]
 jobs:
-  skip:
-    name: Build and test
-    runs-on: ubuntu-latest
-    if: "! contains(github.event.head_commit.message, '[skip ci]')"
-    steps:
-      - run: echo "${{ github.event.head_commit.message }}"
   build:
     needs: skip
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
+    if: "contains(github.event.head_commit.message, '[build]')"
+    env:
+      AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
     - uses: actions/checkout@v2
+
+    - name: set version
+      id: version
+      shell: bash
+      run: |
+        source .env
+        echo "$VERSION"
+        echo ::set-output name=version::$VERSION
+
+    - name: install minio
+      run: |
+        curl -O https://dl.min.io/client/mc/release/linux-amd64/mc
+        sudo chmod +x mc
+        sudo mv ./mc /usr/bin
+        mc alias set spaces $AWS_S3_ENDPOINT $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY --api S3v4
+
     - name: Build docker image
       run: |
         docker build --tag pad-normalize .
+
     - name: Munge data!
+      env:
+        VERSION: ${{ steps.version.outputs.version }}
       run: |
-        export $(echo '${{ github.event.head_commit.message }}' | sed 's/#.*//g' | xargs)
         docker run -v $(pwd)/data:/usr/local/src/scripts/data pad-normalize $VERSION
-    - name: Upload normalized pad!
-      uses: actions/upload-artifact@v1
-      with:
-        name: nycpad
-        path: data/nycpad
-    - name: Upload pad-checks!
-      uses: actions/upload-artifact@v1
-      with:
-        name: pad-checks
-        path: data/pad-checks
+    
+    - name: Complete and Upload!
+      env:
+        VERSION: ${{ steps.version.outputs.version }}
+      run: ./push-to-bucket.sh 

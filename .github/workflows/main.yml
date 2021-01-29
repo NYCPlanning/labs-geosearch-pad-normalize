@@ -34,7 +34,8 @@ jobs:
       env:
         VERSION: ${{ steps.version.outputs.version }}
       run: |
-        docker run -v $(pwd)/data:/usr/local/src/scripts/data pad-normalize $VERSION
+        docker run --user $(id -u):$(id -g) \
+          -v $(pwd)/data:/usr/local/src/scripts/data pad-normalize $VERSION
     
     - name: Complete and Upload!
       env:

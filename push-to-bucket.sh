@@ -9,7 +9,7 @@ function upload {
 
 (
     cd data/nycpad
-    chown $USER:$USER *.csv
+    sudo chown $USER:$USER *.csv
 
     zip labs-geosearch-pad-normalized.zip labs-geosearch-pad-normalized.csv 
     upload labs-geosearch-pad-normalized.zip

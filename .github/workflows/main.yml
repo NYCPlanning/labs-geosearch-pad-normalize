@@ -15,7 +15,7 @@ jobs:
       id: version
       shell: bash
       run: |
-        source .env
+        source version.env
         echo "$VERSION"
         echo ::set-output name=version::$VERSION
 

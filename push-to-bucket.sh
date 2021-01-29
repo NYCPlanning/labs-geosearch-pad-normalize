@@ -8,7 +8,7 @@ function upload {
 }
 
 (
-    cd data
+    cd data/nycpad
     zip labs-geosearch-pad-normalized.zip labs-geosearch-pad-normalized.csv 
     upload labs-geosearch-pad-normalized.zip
 

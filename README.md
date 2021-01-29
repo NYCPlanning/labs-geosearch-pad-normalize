@@ -1,4 +1,6 @@
-# labs-pad-normalize
+# labs-pad-normalize 
+![CI](https://github.com/NYCPlanning/labs-geosearch-pad-normalize/workflows/CI/badge.svg)
+
 R script to normalize PAD data into discrete address records.  Part of the [NYC Geosearch Geocoder Project](https://github.com/NYCPlanning/labs-geosearch-dockerfiles)
 
 # Introduction
@@ -58,8 +60,10 @@ or in detached mode:
 docker run -v $(pwd)/data:/usr/local/src/scripts/data -d pad-normalize 20d
 ```
 # How to run in Github Actions
+Github actions will pick up the version of pad from `version.env`, so please remember to update the pad version in this file before commit
 ```
 git add .
-git commit -m 'VERSION=20d'
+git commit -m '[build]'
 git push origin master
 ```
+> github actions will look at the commit message and only trigger a workflow if `[build]` is mentioned.

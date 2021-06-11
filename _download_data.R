@@ -1,3 +1,5 @@
+# Increase timeout to 600 -> 10 min
+options(timeout=600)
 # Define location of specified PAD version
 source <- paste("https://www1.nyc.gov/assets/planning/download/zip/data-maps/open-data/pad", padVersion, ".zip", sep="")
 # Download PAD

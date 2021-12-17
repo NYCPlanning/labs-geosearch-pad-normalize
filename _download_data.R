@@ -12,7 +12,7 @@ bblQuery <- "SELECT
   bbl,
   Round(ST_X(ST_Centroid(the_geom))::numeric,5) AS lng,
   Round(ST_Y(ST_Centroid(the_geom))::numeric,5) AS lat
-FROM mappluto"
+FROM dcp_mappluto"
 
 # Define download URL for downloading PLUTO data (BBL centroids)
 bblcentroids <- paste("https://planninglabs.carto.com/api/v2/sql?q=", URLencode(bblQuery), "&format=csv", sep="")

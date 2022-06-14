@@ -5,3 +5,4 @@
 .env
 data/*
 unique_combos_simp.csv
+**/.DS_Store

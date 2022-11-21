@@ -4,7 +4,12 @@
 "ADDING CSV-IMPORTER COLUMNS" %>% print
 expanded <- expanded %>% 
   mutate(addendum_json_pad = paste('{"bbl":"', bbl, '","bin":"',bin,'"}', sep = "")) %>%
-  mutate(name = str_trim(paste(houseNum, alt_st_name, sep=" "),side=c("both"))) %>%
+  mutate(
+    name = case_when(
+      is.na(houseNum) ~ alt_st_name,
+      TRUE            ~ paste(houseNum, alt_st_name, sep=" ")
+    )
+  ) %>%
   mutate(source = "nycpad")
 
 "RENAMING AND SELECTING COLUMNS FOR CSV-IMPORTER" %>% print

@@ -1,3 +1,5 @@
+# This file does the exact same thing as main.R except it skips running _download_data.R.
+# This is just for convenience for developmeent! This file should never be run in production!
 source('_globals.R')
 source('_dependencies.R')
 source('_functions.R')

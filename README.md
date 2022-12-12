@@ -1,29 +1,23 @@
 # labs-pad-normalize 
 ![CI](https://github.com/NYCPlanning/labs-geosearch-pad-normalize/workflows/CI/badge.svg)
 
-R script to normalize PAD data into discrete address records.  Part of the [NYC Geosearch Geocoder Project](https://github.com/NYCPlanning/labs-geosearch-dockerfiles)
+R script to normalize PAD data into discrete address records.  Part of the [NYC Geosearch Geocoder Project](https://geosearch.planninglabs.nyc/)
 
 # Introduction
-The NYC Geosearch API is built on Pelias, the open source geocoding engine that powered Mapzen Search. To accomplish this, Labs uses the authoritative Property Address Directory (PAD) data from the NYC Department of City Planning's Geographic Systems Section. However, because the data represent _ranges_ of addresses, the data must be normalized into an "expanded" form that Pelias will understand. This expansion process involves many factor-specific nuances that translate the ranges into discrete address rows.  
-<img width="1335" alt="screen shot 2018-01-18 at 2 48 09 pm" src="https://user-images.githubusercontent.com/1833820/35636336-d944fb22-067e-11e8-800c-65ca2100a67b.png">
+The NYC Geosearch API is built on [Pelias](https://www.pelias.io/), the open source geocoding engine that powered Mapzen Search. To accomplish this, we use the authoritative Property Address Directory (PAD) data from the NYC Department of City Planning's Geographic Systems Section. However, because the data represent _ranges_ of addresses, the data must be normalized into an "expanded" form that Pelias will understand. This expansion process involves many factor-specific nuances that translate the ranges into discrete address rows. This "normalizer" outputs a CSV file that conforms to the schema laid out by Pelias' offical [CSV Importer](https://github.com/pelias/csv-importer). As per the CSV importer's documentation, the CSVs include a column called `addendum_json_pad` that includes stringified JSON of custom fields we need to include, such as `bbl` and `bin`. This JSON also includes a `version` property so that JSON responses from the Geosearch API tell consumers which version of PAD was used to create the data they are receiving.
 
+Note that this repo is only responsible for _building and uploading_ a dataset that will eventually be loaded into the ElasticSearch database underpinning our instance of Pelias that makes up the product we refer to as "Geosearch". If you need to deploy a new version of Geosearch using a new version of PAD, use this repo to get a new `labs-geosearch-pad-normalized.csv` file uploaded to Digital Ocean, then refer to [labs-geosearch-docker](https://github.com/NYCPlanning/labs-geosearch-docker) for steps on how to build a deploy a new geosearch Droplet that uses the data you just created and uploaded.
 
-We are treating the normalization of the PAD data as a separate data workflow from the [PAD Pelias Importer](https://github.com/NYCPlanning/labs-geosearch-pad-importer). This script starts with the published PAD file, and outputs a normalized CSV of discrete addresses, ready to be picked up by the importer.
 
 # Data
-This script downloads a version of the PAD data from [NYC's Bytes of the Big Apple](https://www1.nyc.gov/site/planning/data-maps/open-data.page). The Property Address Directory (PAD) contains geographic information about New York City’s approximately one million tax lots (parcels of real property) and the buildings on them.  PAD was created and is maintained by the Department of City Planning’s (DCP’s) Geographic Systems Section (GSS).  PAD is released under the BYTES of the BIG APPLE product line four times a year, reflecting tax geography changes, new buildings and other property-related changes. 
+This script downloads a version of the PAD data from [NYC's Bytes of the Big Apple](https://www1.nyc.gov/site/planning/data-maps/open-data.page). The Property Address Directory (PAD) contains geographic information about New York City’s approximately one million tax lots (parcels of real property) and the buildings on them.  PAD was created and is maintained by the Department of City Planning’s (DCP’s) Geographic Systems Section (GSS).  PAD is released under the BYTES of the BIG APPLE product line four times a year, reflecting tax geography changes, new buildings and other property-related changes.
+
+The zip file downloaded in `_download_data.R` for PAD also includes a copy of the [Street Name Directory (SND)](https://www.nyc.gov/site/planning/data-maps/open-data.page#snd) which includes various street data.
+
+In addition to the data found in the PAD zip file, `_download_data.R` also downloads MapPLUTO data from the `nycplanning-web` (username `planninglabs`) Carto instance and "building footprint" data from the City's [Open Data Portal](https://data.cityofnewyork.us/Housing-Development/Building-Footprints/nqwf-w8eh).
 
 # R Script
-This script will output a file in the `/data` directory called `final.csv`. This is the expanded output. To make sure the script is getting the latest version of PAD, check that the [`source`](https://github.com/NYCPlanning/labs-pad-normalize/blob/master/munge.R#L8) is pointing to the most updated version of PAD. 
-
-# Status
-The script is incomplete! Find sample output [here](https://github.com/NYCPlanning/labs-pad-normalize/blob/master/pad-sample.csv). Over the coming weeks, it should be finalized. 
-
-# Deploy
-To "deploy" data as the source for the geosearch importer, run `npm run deploy`. You must have s3cmd configured as it will run that command to upload output files. To setup for Digital Ocean spaces, see: https://www.digitalocean.com/community/tutorials/how-to-configure-s3cmd-2-x-to-manage-digitalocean-spaces.
-
-For a new version of pad, two references to files need to be updated.  In `download_data` ensure that the download link points to the latest PAD version (17D, 18A, etc) and `load_data` make sure the path to the street name dictionary (snd17Dcow.txt, snd18Acow.txt, etc) reflects the current release.
-
+This script will output four CSV files to the `/data/nycpad` directory - the full output will be in `labs-geosearch-pad-normalized.csv` along with truncates small, medium, and large versions of the output to help with local development.
 # How to run locally
 Make sure R is installed on your machine. If you just want CLI stuff:
 ```sh
@@ -38,14 +32,16 @@ $ R
 
 Run the R script to normalize the new PAD data:
 ```sh
-$ Rscript ./munge.R
+$ Rscript ./main.R
 ```
-Due to the nature of the PAD dataset, it is very likely that some data processing may be incompatible with new versions. At the very least, it if likely new entries will need to be added to the [suffix lookup table data](https://github.com/NYCPlanning/labs-geosearch-pad-normalize/blob/develop/suffix_lookup.csv). Do not dispair. Use RStudio to step thru the munging process one step at a time. You'll get there. You got this!
 
-If you're happy with your data, push it to digital ocean using the included shell script:
+To skip the costly step of re-downloading data on every attempt, you can run:
 ```sh
-$ ./push-to-bucket.sh
+$ Rscript ./main_skip_download.R
 ```
+
+Due to the nature of the PAD dataset, it is very likely that some data processing may be incompatible with new versions. At the very least, it if likely new entries will need to be added to the [suffix lookup table data](https://github.com/NYCPlanning/labs-geosearch-pad-normalize/blob/main/suffix_lookup.csv). Do not dispair. Use RStudio to step thru the munging process one step at a time. You'll get there. You got this!
+
 # How to run if you have Docker installed
 1. Make sure you check the Bytes of Big Apple for the latest version of PAD (replace 20a with the latest version)
 ```
@@ -59,7 +55,9 @@ or in detached mode:
 ```
 docker run -v $(pwd)/data:/usr/local/src/scripts/data -d pad-normalize 20d
 ```
-# How to run in Github Actions
-Github actions will pick up the version of pad from `version.env`, so please remember to update the pad version in this file before commit
-> github actions will run on all branches, and only deploy computed files to digitocean when pushing to the `main` branch
+# How to update data in the "production" Digital Ocean Space
+This project is run in "production" via Github Actions. The workflow found in `/.github/workflows/main.yml`  will pick up the version of pad from `version.env`. In order to upload new data to Digital Ocean:
+* Create a branch off of `main` and change the pad version listed in `version.env`
+* Push your branch to GH and open a PR against `main`. The GH action workflow in `/.github/workflows/main.yml` will attempt to build the dataset on pushes to _all_ branches, not just `main`. However, it will only attempt to _upload_ the output (by running `push-to-bucket.sh`) to Digital Ocean on pushes to `main`. You can use this to check that the Actions running your feature branch appear to build the dataset successfully before merging into `main`.
+* Once your PR is approved, you can merge it. Merging will kick off another the workflow again which, if successful, will upload the updated dataset to the corresponding Digital Ocean space.
 

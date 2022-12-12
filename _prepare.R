@@ -3,7 +3,7 @@
 # https://github.com/pelias/csv-importer#custom-data
 "ADDING CSV-IMPORTER COLUMNS" %>% print
 expanded <- expanded %>% 
-  mutate(addendum_json_pad = paste('{"bbl":"', bbl, '","bin":"',bin,'"}', sep = "")) %>%
+  mutate(addendum_json_pad = paste('{"bbl":"', bbl, '","bin":"',bin,'","version":"',padVersion,'"}', sep = "")) %>%
   mutate(
     name = case_when(
       is.na(houseNum) ~ alt_st_name,

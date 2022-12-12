@@ -11,17 +11,13 @@ function upload {
     cd data/nycpad
     sudo chown $USER:$USER *.csv
 
-    zip labs-geosearch-pad-normalized.zip labs-geosearch-pad-normalized.csv 
-    upload labs-geosearch-pad-normalized.zip
+    upload labs-geosearch-pad-normalized.csv
 
-    zip labs-geosearch-pad-normalized-sample-lg.zip labs-geosearch-pad-normalized-sample-lg.csv
-    upload labs-geosearch-pad-normalized-sample-lg.zip
+    upload labs-geosearch-pad-normalized-sample-lg.csv
 
-    zip labs-geosearch-pad-normalized-sample-md.zip labs-geosearch-pad-normalized-sample-md.csv
-    upload labs-geosearch-pad-normalized-sample-md.zip
+    upload labs-geosearch-pad-normalized-sample-md.csv
 
-    zip labs-geosearch-pad-normalized-sample-sm.zip labs-geosearch-pad-normalized-sample-sm.csv
-    upload labs-geosearch-pad-normalized-sample-sm.zip
+    upload labs-geosearch-pad-normalized-sample-sm.csv
 )
 
 echo "done"

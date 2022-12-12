@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: set version
+    - name: Set version
       id: version
       shell: bash
       run: |
@@ -20,7 +20,7 @@ jobs:
         echo "$VERSION"
         echo ::set-output name=version::$VERSION
 
-    - name: install minio
+    - name: Install Minio
       run: |
         curl -O https://dl.min.io/client/mc/release/linux-amd64/mc
         sudo chmod +x mc
@@ -31,14 +31,14 @@ jobs:
       run: |
         docker build --tag pad-normalize .
 
-    - name: Munge data!
+    - name: Build dataset!
       env:
         VERSION: ${{ steps.version.outputs.version }}
       run: |
         docker run --user $(id -u):$(id -g) \
           -v $(pwd)/data:/usr/local/src/scripts/data pad-normalize $VERSION
     
-    - name: Complete and Upload!
+    - name: Upload!
       if: github.ref == 'refs/heads/main'
       env:
         VERSION: ${{ steps.version.outputs.version }}

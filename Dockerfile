@@ -1,7 +1,10 @@
 FROM rocker/tidyverse:3.6.3
 
 RUN apt-get update && apt-get install -y \
-    libudunits2-dev
+    libudunits2-dev \ 
+    libgdal-dev \
+    libgeos-dev \
+    libproj-dev
 
 RUN echo "options(repos = c(CRAN = 'https://cran.rstudio.org'))" >> /usr/local/lib/R/etc/Rprofile.site
 

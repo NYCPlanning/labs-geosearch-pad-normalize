@@ -1,4 +1,4 @@
-FROM rocker/tidyverse:3.6.3
+FROM rocker/tidyverse:4.3.1
 
 RUN install2.r --error \
     --deps TRUE \

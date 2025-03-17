@@ -24,7 +24,7 @@ download(bblcentroids, dest=paste0(dataDir, "/bblcentroids.csv"), mode="wb")
 library(httr)
 
 # Make a GET request on the building footprints' parent (and constant) ID
-r <- GET('https://data.cityofnewyork.us/api/views/nqwf-w8eh')
+r <- GET('https://data.cityofnewyork.us/api/views/5zhs-2jue')
 
 # Define list of IDs belonging to all of the child views this dataset has
 ids <- strsplit(content(r)$metadata$geo$layers, ",")

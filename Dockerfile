@@ -1,10 +1,9 @@
-FROM rocker/tidyverse:4.3.1
+FROM rocker/geospatial:4.4
 
 RUN install2.r --error \
     --deps TRUE \
     jsonlite \
-    downloader \
-    sf
+    downloader
 
 RUN mkdir -p /data/nycpad
 

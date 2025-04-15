@@ -30,16 +30,16 @@ bincentroids <- bincentroids %>%
   mutate(lng = as.double(lng, options(digits=7)))
 
 # # Left join BBL bill data; unite boro, block, lots, for a concatenated join keys
-# pad <- padRaw %>%
-#   left_join(bbl, by = c('boro', 'block', 'lot')) %>%
-#   unite(billbbl, billboro, billblock, billlot, sep="", remove=FALSE) %>%
-#   unite(bbl, boro, block, lot, sep="", remove=FALSE) %>%
-#   mutate(
-#     bbl = case_when(
-#       (lot >= 1001 & lot <= 6999 & billbbl != 'NANANA') ~ billbbl,
-#       TRUE                        ~ bbl
-#     )
-#   )
+pad <- padRaw %>%
+  left_join(bbl, by = c('boro', 'block', 'lot')) %>%
+  unite(billbbl, billboro, billblock, billlot, sep="", remove=FALSE) %>%
+  unite(bbl, boro, block, lot, sep="", remove=FALSE) %>%
+  mutate(
+    bbl = case_when(
+      (lot >= 1001 & lot <= 6999 & billbbl != 'NANANA') ~ billbbl,
+      TRUE                        ~ bbl
+    )
+  )
 
 # Split the house number sort columns into discrete columns with separator being the specific format position of the PAD data.
 # Also, create new columns that are numeric or character-parsed versions of the columns for later use.

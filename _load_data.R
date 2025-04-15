@@ -29,7 +29,7 @@ bblcentroids <- read_csv(
   distinct(bbl, .keep_all=TRUE)
 
 # Read building footprints data, make them distinct on the bin key
-buildingFootprints <- read_csv(
+bincentroids <- read_csv(
   paste0(dataDir, "/buildingFootprints.csv"),
   col_types = cols_only(
     bin = col_character(),

@@ -24,7 +24,7 @@ download(bblcentroids, dest=paste0(dataDir, "/bblcentroids.csv"), mode="wb")
 library(httr)
 
 # Download entire building footprint dataset from open data as csv. Limit manually set to include all records.
-buildingFootprintsEndpoint = "http://data.cityofnewyork.us/resource/5zhs-2jue.csv?$limit=2000000"
+buildingFootprintsEndpoint = "http://data.cityofnewyork.us/resource/u9wf-3gbt.csv?$limit=2000000"
 
 # Download building footprints data
 download(buildingFootprintsEndpoint, dest=paste0(dataDir, "/buildingFootprints.csv"), mode="wb")

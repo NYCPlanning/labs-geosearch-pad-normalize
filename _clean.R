@@ -9,18 +9,18 @@ snd <- snd %>%
 sf_use_s2(FALSE)
 
 # Convert WKT multipolygon in building footprints to sf geometry
-buildingFootprints <- buildingFootprints %>%
-  mutate(geometry = st_as_sfc(the_geom, crs = 4326)) %>%
-  st_as_sf()
+# buildingFootprints <- buildingFootprints %>%
+#   mutate(geometry = st_as_sfc(the_geom, crs = 4326)) %>%
+#   st_as_sf()
 
-# Replace multipolygon with its centroid
-bincentroids <- buildingFootprints %>%
-  mutate(geometry = st_centroid(geometry))
+# # Replace multipolygon with its centroid
+# bincentroids <- buildingFootprints %>%
+#   mutate(geometry = st_centroid(geometry))
 
-# Convert centroid sf geometry back to WKT and overwrite 'the_geom'
-bincentroids <- bincentroids %>%
-  mutate(the_geom = st_as_text(geometry)) %>%
-  st_drop_geometry()
+# # Convert centroid sf geometry back to WKT and overwrite 'the_geom'
+# bincentroids <- bincentroids %>%
+#   mutate(the_geom = st_as_text(geometry)) %>%
+#   st_drop_geometry()
 
 # parse out lat and lng from "the_geom" in building footprints (bin centroids) and cast to doubles
 bincentroids <- bincentroids %>%
@@ -29,17 +29,17 @@ bincentroids <- bincentroids %>%
   mutate(lat = as.double(lat, options(digits=7))) %>%
   mutate(lng = as.double(lng, options(digits=7)))
 
-# Left join BBL bill data; unite boro, block, lots, for a concatenated join keys
-pad <- padRaw %>%
-  left_join(bbl, by = c('boro', 'block', 'lot')) %>%
-  unite(billbbl, billboro, billblock, billlot, sep="", remove=FALSE) %>%
-  unite(bbl, boro, block, lot, sep="", remove=FALSE) %>%
-  mutate(
-    bbl = case_when(
-      (lot >= 1001 & lot <= 6999 & billbbl != 'NANANA') ~ billbbl,
-      TRUE                        ~ bbl
-    )
-  )
+# # Left join BBL bill data; unite boro, block, lots, for a concatenated join keys
+# pad <- padRaw %>%
+#   left_join(bbl, by = c('boro', 'block', 'lot')) %>%
+#   unite(billbbl, billboro, billblock, billlot, sep="", remove=FALSE) %>%
+#   unite(bbl, boro, block, lot, sep="", remove=FALSE) %>%
+#   mutate(
+#     bbl = case_when(
+#       (lot >= 1001 & lot <= 6999 & billbbl != 'NANANA') ~ billbbl,
+#       TRUE                        ~ bbl
+#     )
+#   )
 
 # Split the house number sort columns into discrete columns with separator being the specific format position of the PAD data.
 # Also, create new columns that are numeric or character-parsed versions of the columns for later use.

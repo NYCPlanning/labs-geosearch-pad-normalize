@@ -26,7 +26,7 @@ $ brew install R
 Install necessary packages
 ```sh
 $ R
-> install.packages(c("tidyverse", "jsonlite", "downloader", "sf"))
+> install.packages(c("tidyverse", "jsonlite", "downloader"))
 ```
 (Note: this may take a long time. Go get a coffee or something)
 

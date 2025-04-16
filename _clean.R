@@ -4,30 +4,13 @@ snd <- snd %>%
   mutate(alt_st_name = str_trim(gsub("\\s+", " ", alt_st_name))) %>%
   mutate(full_stname = str_trim(gsub("\\s+", " ", full_stname)))
 
-# Before processing building footprints, set s2 on sf library to false
-# See https://github.com/r-spatial/sf/issues/1762 and https://github.com/r-spatial/sf/issues/1771 for details
-sf_use_s2(FALSE)
-
-# Convert WKT multipolygon in building footprints to sf geometry
-buildingFootprints <- buildingFootprints %>%
-  mutate(geometry = st_as_sfc(the_geom, crs = 4326)) %>%
-  st_as_sf()
-
-# Replace multipolygon with its centroid
-bincentroids <- buildingFootprints %>%
-  mutate(geometry = st_centroid(geometry))
-
-# Convert centroid sf geometry back to WKT and overwrite 'the_geom'
-bincentroids <- bincentroids %>%
-  mutate(the_geom = st_as_text(geometry)) %>%
-  st_drop_geometry()
-
 # parse out lat and lng from "the_geom" in building footprints (bin centroids) and cast to doubles
 bincentroids <- bincentroids %>%
   mutate(the_geom = gsub("POINT \\((.*)\\)", "\\1", the_geom)) %>%
   separate(the_geom, c("lng", "lat"), sep = " ") %>%
   mutate(lat = as.double(lat, options(digits=7))) %>%
   mutate(lng = as.double(lng, options(digits=7)))
+
 
 # Left join BBL bill data; unite boro, block, lots, for a concatenated join keys
 pad <- padRaw %>%

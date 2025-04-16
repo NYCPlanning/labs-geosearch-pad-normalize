@@ -4,10 +4,6 @@ snd <- snd %>%
   mutate(alt_st_name = str_trim(gsub("\\s+", " ", alt_st_name))) %>%
   mutate(full_stname = str_trim(gsub("\\s+", " ", full_stname)))
 
-# Before processing building footprints, set s2 on sf library to false
-# See https://github.com/r-spatial/sf/issues/1762 and https://github.com/r-spatial/sf/issues/1771 for details
-sf_use_s2(FALSE)
-
 # Convert WKT multipolygon in building footprints to sf geometry
 buildingFootprints <- buildingFootprints %>%
   mutate(geometry = st_as_sfc(the_geom, crs = 4326)) %>%

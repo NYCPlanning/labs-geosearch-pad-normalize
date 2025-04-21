@@ -14,7 +14,7 @@ This script downloads a version of the PAD data from [NYC's Bytes of the Big App
 
 The zip file downloaded in `_download_data.R` for PAD also includes a copy of the [Street Name Directory (SND)](https://www.nyc.gov/site/planning/data-maps/open-data.page#snd) which includes various street data.
 
-In addition to the data found in the PAD zip file, `_download_data.R` also downloads MapPLUTO data from the `nycplanning-web` (username `planninglabs`) Carto instance and "building footprint" data from the City's [Open Data Portal](https://data.cityofnewyork.us/Housing-Development/Building-Footprints/nqwf-w8eh).
+In addition to the data found in the PAD zip file, `_download_data.R` also downloads MapPLUTO data from the `nycplanning-web` (username `planninglabs`) Carto instance and "building footprint" data from the City's [Open Data Portal](https://data.cityofnewyork.us/Housing-Development/Building-Footprints/u9wf-3gbt).
 
 # R Script
 This script will output four CSV files to the `/data/nycpad` directory - the full output will be in `labs-geosearch-pad-normalized.csv` along with truncates small, medium, and large versions of the output to help with local development.

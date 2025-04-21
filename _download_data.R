@@ -23,17 +23,8 @@ download(bblcentroids, dest=paste0(dataDir, "/bblcentroids.csv"), mode="wb")
 # Import the `httr` library for making HTTP requests
 library(httr)
 
-# Make a GET request on the building footprints' parent (and constant) ID
-r <- GET('https://data.cityofnewyork.us/api/views/nqwf-w8eh')
-
-# Define list of IDs belonging to all of the child views this dataset has
-ids <- strsplit(content(r)$metadata$geo$layers, ",")
-
-# Define the child view ID for BIN centroids
-view_id <- ids[[1]][length(ids[[1]])]
-
-# Define source URL for downloading building footprints data (BIN centroids)
-bincentroids <- paste("https://data.cityofnewyork.us/api/views/", view_id, "/rows.csv?accessType=DOWNLOAD", sep="")
+# Download entire building footprint centroid dataset from open data as csv. Limit manually set to include all records.
+buildingFootprintsCentroidEndpoint = "http://data.cityofnewyork.us/resource/u9wf-3gbt.csv?$limit=2000000"
 
 # Download building footprints data
-download(bincentroids, dest=paste0(dataDir, "/bincentroids.csv"), mode="wb")
+download(buildingFootprintsCentroidEndpoint, dest=paste0(dataDir, "/bincentroids.csv"), mode="wb")

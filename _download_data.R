@@ -1,7 +1,7 @@
 # Increase timeout to 600 -> 10 min
 options(timeout=600)
 # Define location of specified PAD version
-source <- paste("https://s-media.nyc.gov/agencies/dcp/assets/files/zip/data-tools/bytes/pad_", padVersion, ".zip", sep="")
+source <- paste("https://s-media.nyc.gov/agencies/dcp/assets/files/zip/data-tools/bytes/pad/pad_", padVersion, ".zip", sep="")
 # Download PAD
 download(source, dest=paste0(dataDir, "/dataset.zip"), mode="wb")
 # Unzip PAD

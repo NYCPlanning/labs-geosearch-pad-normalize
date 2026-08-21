@@ -22,9 +22,14 @@ jobs:
 
     - name: Install Minio
       run: |
-        curl -O https://dl.min.io/client/mc/release/linux-amd64/mc
+        curl -fsSL -O https://dl.min.io/client/mc/release/linux-amd64/mc
+        if [ ! -f mc ]; then
+          echo "Failed to download mc"
+          exit 1
+        fi
         sudo chmod +x mc
         sudo mv ./mc /usr/bin
+        mc --version
         mc alias set spaces $AWS_S3_ENDPOINT $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY --api S3v4
 
     - name: Build docker image

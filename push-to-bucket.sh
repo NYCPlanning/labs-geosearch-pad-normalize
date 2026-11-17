@@ -1,10 +1,10 @@
 #!/bin/bash
-LATEST_PATH=spaces/planninglabs/geosearch-data/latest
-VERSIONED_PATH=spaces/planninglabs/geosearch-data/$VERSION
+LATEST_PATH=planninglabs/geosearch-data/latest
+VERSIONED_PATH=planninglabs/geosearch-data/$VERSION
 
 function upload {
-    mc cp --attr x-amz-acl=public-read $1 $VERSIONED_PATH/$1
-    mc cp --attr x-amz-acl=public-read $1 $LATEST_PATH/$1
+    rclone copyto --s3-acl public-read $1 spaces:$VERSIONED_PATH/$1
+    rclone copyto --s3-acl public-read $1 spaces:$LATEST_PATH/$1
 }
 
 (

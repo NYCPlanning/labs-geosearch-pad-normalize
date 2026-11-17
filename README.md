@@ -10,9 +10,9 @@ Note that this repo is only responsible for _building and uploading_ a dataset t
 
 
 # Data
-This script downloads a version of the PAD data from [NYC's Bytes of the Big Apple](https://www1.nyc.gov/site/planning/data-maps/open-data.page). The Property Address Directory (PAD) contains geographic information about New York City’s approximately one million tax lots (parcels of real property) and the buildings on them.  PAD was created and is maintained by the Department of City Planning’s (DCP’s) Geographic Systems Section (GSS).  PAD is released under the BYTES of the BIG APPLE product line four times a year, reflecting tax geography changes, new buildings and other property-related changes.
+This script downloads a version of the PAD data from [NYC's Bytes of the Big Apple](https://www.nyc.gov/content/planning/pages/resources#datasets). The Property Address Directory (PAD) contains geographic information about New York City’s approximately one million tax lots (parcels of real property) and the buildings on them.  PAD was created and is maintained by the Department of City Planning’s (DCP’s) Geographic Systems Section (GSS).  PAD is released under the BYTES of the BIG APPLE product line four times a year, reflecting tax geography changes, new buildings and other property-related changes.
 
-The zip file downloaded in `_download_data.R` for PAD also includes a copy of the [Street Name Directory (SND)](https://www.nyc.gov/site/planning/data-maps/open-data.page#snd) which includes various street data.
+The zip file downloaded in `_download_data.R` for PAD also includes a copy of the [Street Name Directory (SND)](https://www.nyc.gov/content/planning/pages/resources/datasets/snd) which includes various street data.
 
 In addition to the data found in the PAD zip file, `_download_data.R` also downloads MapPLUTO data from the `nycplanning-web` (username `planninglabs`) Carto instance and "building footprint" data from the City's [Open Data Portal](https://data.cityofnewyork.us/Housing-Development/Building-Footprints/u9wf-3gbt).
 

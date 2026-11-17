@@ -20,17 +20,24 @@ jobs:
         echo "$VERSION"
         echo ::set-output name=version::$VERSION
 
-    - name: Install Minio
+    - name: Install rclone
       run: |
-        curl -fsSL -O https://dl.min.io/client/mc/release/linux-amd64/mc
-        if [ ! -f mc ]; then
-          echo "Failed to download mc"
+        curl -fsSL -O https://downloads.rclone.org/rclone-current-linux-amd64.zip
+        if [ ! -f rclone-current-linux-amd64.zip ]; then
+          echo "Failed to download rclone"
           exit 1
         fi
-        sudo chmod +x mc
-        sudo mv ./mc /usr/bin
-        mc --version
-        mc alias set spaces $AWS_S3_ENDPOINT $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY --api S3v4
+        unzip rclone-current-linux-amd64.zip
+        cd rclone-*-linux-amd64
+        sudo cp rclone /usr/bin/
+        sudo chown root:root /usr/bin/rclone
+        sudo chmod 755 /usr/bin/rclone
+        rclone --version
+        rclone config create spaces s3 \
+          provider=DigitalOcean \
+          endpoint=$AWS_S3_ENDPOINT \
+          access_key_id=$AWS_ACCESS_KEY_ID \
+          secret_access_key=$AWS_SECRET_ACCESS_KEY
 
     - name: Build docker image
       run: |
